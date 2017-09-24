@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			img {
+				width: 100px;
+				position: absolute;
+			}
+		</style>
+	</head>
+
+	<body>
+		<img src="xn.png" alt="" />
+		<img src="xn.png" alt="" />
+		<img src="xn.png" alt="" />
+		<img src="xn.png" alt="" />
+		<img src="xn.png" alt="" />
+	</body>
+	<script type="text/javascript">
+		var aImg = document.getElementsByTagName('img');
+
+		for(var i = 0; i < aImg.length; i++) {
+			fn(aImg[i]);
+		}
+
+		function fn(obj) {
+			obj.onmousedown = function(e) {
+				e = e || event;
+				//标准浏览器下的取消默认行为的方式
+				if(e.preventDefault) {
+					e.preventDefault();
+				}
+				//短路写法
+				//e.preventDefault&&e.preventDefault();
+
+				//IE内核下取消默认行为
+				e.returnValue && (e.returnValue = false); //=====&&等级比较高，，要加括号
+
+				//在IE低版本中必须给图片设置焦点捕获===并且有兼容性标准浏览器会报错
+				obj.setCapture && obj.setCapture();
+
+				//获取鼠标到图片边缘的固定距离
+				var Imgx = e.clientX - obj.offsetLeft;
+				var Imgy = e.clientY - obj.offsetTop;
+
+				document.onmousemove = function(e) {
+					e = e || event;
+
+					obj.style.left = e.clientX - Imgx + 'px';
+					obj.style.top = e.clientY - Imgy + 'px';
+
+				}
+				document.onmouseup = function() {
+					document.onmousemove = null;
+					//取消图片的焦点
+					obj.releaseCapture && obj.releaseCapture();
+
+				}
+
+			}
+		}
+	</script>
+
+</html>

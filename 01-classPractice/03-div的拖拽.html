@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#box {
+				width: 100px;
+				height: 100px;
+				background-color: red;
+				position: absolute;
+				left: 100px;
+				top: 100px;
+			}
+		</style>
+	</head>
+
+	<body style="height:2000px">
+		<div id="box"></div>
+	</body>
+	<script type="text/javascript">
+		var oBox = document.getElementById('box');
+
+		oBox.onmousedown = function(e) {
+			e = e || event;
+				
+			//pageX，，pageY为整个文档的宽度和高度
+			
+			
+			//有兼容性要配置
+			var pageX = e.clientX + document.documentElement.scrollTop;
+			var pageY = e.clientY + document.documentElement.scrollLeft;
+			var boxX = e.pageX - oBox.offsetLeft;
+			var boxY = e.pageY - oBox.offsetTop;
+
+			document.onmousemove = function(e) {
+				e = e || event;
+			//	var tar = document.documentElement.scrollTop||document.body.scrollTop;
+				var pageX = e.clientX+document.documentElement.scrollTop;
+				var pageY = e.clientY+document.documentElement.scrollLeft;
+				var x = e.pageX - boxX;
+				var y = e.pageY  - boxY ;
+				oBox.style.left = x + 'px';
+				//oBox.style.top = e.clientY - boxY + 'px';
+				//当有滚动条时应加上滚动条滚过的距离
+				oBox.style.top = y + 'px';
+				//console.log(tar);
+			}
+			document.onmouseup = function() {
+				document.onmousemove = null;
+			}
+		}
+	</script>
+
+</html>

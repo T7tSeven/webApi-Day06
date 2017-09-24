@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#fly {
+				width: 85px;
+				height: 81px;
+				background: url(fly.gif);
+				position: absolute;
+				left: 100px;
+				top: 100px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="fly"></div>
+	</body>
+	<script type="text/javascript">
+		var oDiv = document.getElementById('fly');
+		//设置四个方向开关，，当开关打开时飞机起飞
+		var onOff={
+			left:false,
+			up:false,
+			down:false,
+			right:false
+		};
+		
+		//飞机方向控制
+		function fly(){
+			if(onOff.left == true) {
+				oDiv.style.left = oDiv.offsetLeft - 10 + 'px';
+				oDiv.style.transform = 'rotate(270deg)';
+			}
+			if(onOff.right == true) {
+				oDiv.style.left = oDiv.offsetLeft + 10 + 'px';
+				oDiv.style.transform = 'rotate(90deg)';
+			}
+			if(onOff.up == true) {
+				oDiv.style.top = oDiv.offsetTop - 10 + 'px';
+				oDiv.style.transform = 'rotate(0deg)';
+			}
+			if(onOff.down == true) {
+				oDiv.style.top = oDiv.offsetTop + 10 + 'px';
+				oDiv.style.transform = 'rotate(180deg)';
+			}
+			
+			if (onOff.left&&onOff.up) {
+				oDiv.style.transform = "rotate(-45deg)";
+			}else if(onOff.left&&onOff.down) {
+				oDiv.style.transform = "rotate(225deg)";
+			}else if(onOff.right&&onOff.up) {
+				oDiv.style.transform = "rotate(45deg)";
+			}else if(onOff.right&&onOff.down) {
+				oDiv.style.transform = "rotate(135deg)";
+			}
+			limit();
+		}
+		
+		//键盘按下事件
+		document.onkeydown = function(e) {
+			e = e || event;
+fly();
+			if(e.keyCode == 37) {
+				onOff.left=true;
+			}
+			if(e.keyCode == 39) {
+				onOff.right=true;
+			}
+			if(e.keyCode == 38) {
+				onOff.up=true;
+			}
+			if(e.keyCode == 40) {
+				onOff.down=true;
+			}
+			
+		}
+		
+		//键盘抬起事件
+		document.onkeyup= function(e) {
+			e = e || event;
+
+			if(e.keyCode == 37) {
+				onOff.left=false;
+			}
+			if(e.keyCode == 39) {
+				onOff.right=false;
+			}
+			if(e.keyCode == 38) {
+				onOff.up=false;
+			}
+			if(e.keyCode == 40) {
+				onOff.down=false;
+			}
+			fly();
+		}
+		//限制范围函数
+		function limit() {
+			if(oDiv.offsetLeft < 0) {
+				oDiv.style.left = 0;
+			}
+			if(oDiv.offsetLeft >= client().l - oDiv.offsetHeight) {
+				oDiv.style.left = client().l - oDiv.offsetWidth + 'px';
+			}
+			if(oDiv.offsetTop < 0) {
+				oDiv.style.top = 0;
+			}
+			if(oDiv.offsetTop >= client().t - oDiv.offsetHeight) {
+				oDiv.style.top = client().t - oDiv.offsetHeight + 'px';
+			}
+
+		}
+
+		//封装一个获取可视区域宽高的函数
+		function client() {
+			return {
+				l: document.documentElement.clientWidth,
+				t: document.documentElement.clientHeight
+			};
+		}
+	</script>
+
+</html>
